@@ -144,6 +144,11 @@ https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/verce
 }
 ```
 
+# 增加某个语言下某个词的词密度
+- 在scripts/add-word-locale.js中 修改要调整词密度的语言代码和目标词
+- cd scripts/ 目录下执行命令：`bun run add-word-locale.js` 或者 `node add-word-locale.js`
+
+
 
 ## 版权声明
 - 本项目采用MIT开源协议，请遵守协议内容
