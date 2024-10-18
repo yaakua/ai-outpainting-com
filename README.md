@@ -77,7 +77,6 @@ const description = '利用AI技术实现对图片进行扩展，在保证原始
 
 - 修改config/site.ts当中的配置信息
 
- ```
 ### 2. 替换网站logo和标题等信息
 - 将自己的logo favicon.ico 放到public/目录下，直接替换原文件
 - 修改public/sitemap.xml 当中的域名
@@ -85,6 +84,7 @@ const description = '利用AI技术实现对图片进行扩展，在保证原始
 
 ### 3.初始化数据库
 - 当前项目采用prisma作为ORM框架，表结构声明在schema.prisma文件当中，第一次使用需要执行如下命令
+
 ```javascript
 // 这个命令会根据表结构声明生成数据库表，并初始化表数据。如果有新的表字段更新都需要执行当前命令
  yarn pg:migrate 
