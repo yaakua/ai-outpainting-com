@@ -126,7 +126,7 @@ const description = '利用AI技术实现对图片进行扩展，在保证原始
 - 当前项目开发环境下使用自定义代理地址，解决本地无法调用google.com的问题。具体配置见代码config/auth-config.ts。生产环境不受影响
 
 
-![google-auth-1](./doc/google-auth-1.png)
+![google-auth-1](./doc/google-auth.png)
 
 ## 解决prisma在vercel构建时提示prisma generate的问题
 https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/vercel-caching-issue

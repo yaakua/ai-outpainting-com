@@ -3,7 +3,6 @@ import { DEFAULT_LOCALE, locales } from '@/framework/locale/locale'
 import authConfig from '@/config/auth-config'
 
 import NextAuth from 'next-auth'
-import { createUser } from './auth'
 
 const ADMIN_INCLUDE_PATHS = ['/admin', '/plan-admin']
 
