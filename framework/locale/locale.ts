@@ -26,11 +26,9 @@ export enum AVAILABLE_LOCALES {
   th = 'th', // 泰语
   id = 'id', // 印度尼西亚语
   hi = 'hi', // 印地语
-  // ar = 'ar', // 阿拉伯语
   bn = 'bn', // 孟加拉语
   ms = 'ms', // 马来语
   tr = 'tr', // 土耳其语
-  // fa = 'fa', // 波斯语
 }
 
 
