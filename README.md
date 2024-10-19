@@ -99,6 +99,9 @@ const description = '利用AI技术实现对图片进行扩展，在保证原始
 - 将代码提交到github.com然后使用vercel关联这个代码仓库部署即可，具体流程参考相关文档。
 
 
+## 更新记录
+- 【2024-10-19】 解决启动时提示 `Error: ENOENT: no such file or directory xxx/.next/fallback-build-manifest.json` 问题,通过固定"@lingui/swc-plugin": "4.0.8",版本解决。删除本地node_modules目录，重新安装依赖解决。
+  - 增加Google 登录配置参考截图
 
 ## 当前项目使用到的 UI 组件
 
@@ -117,15 +120,22 @@ const description = '利用AI技术实现对图片进行扩展，在保证原始
   > 动态生成国际化文件
 - [6.MDX博客](https://gaudion.dev/blog/nextjs-mdx-blog)
   > 基于MDX生成博客内容
+- [7.Google Auth 配置中心](https://console.cloud.google.com/apis/dashboard?hl=zh-cn&pli=1)
+  > 配置Google登录需要的参数
+## google auth配置参考
+- 当前项目开发环境下使用自定义代理地址，解决本地无法调用google.com的问题。具体配置见代码config/auth-config.ts。生产环境不受影响
 
+
+![google-auth-1](./doc/google-auth-1.png)
 
 ## 解决prisma在vercel构建时提示prisma generate的问题
 https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/vercel-caching-issue
 
 # 解决本地无法打开Google登录问题
-- 修改node_modules/@auth/core/node_modules/oauth4webapi/build/index.js
+- 点击google登录时，页面提示`There is a problem with the server configuration.`,后端提示`[auth][error] OperationProcessingError: "response" body "issuer" property does not match the expected value` 错误，按如下方式修改
+- 修改node_modules/@auth/core/node_modules/oauth4webapi/build/index.js 或者 node_modules/oauth4webapi/dist/index.js文件
   - 修改后需要手动删除一下 .next目录，并重新编译
-  - 1034  \1003 行，注释抛出的异常 有些新版本不一定是这一行，可以参考下面的点找到这个报错信息，然后注释掉
+  - 1034 或者 1003 或者 1237 行(不同版本可能不一样)，注释抛出的异常 有些新版本不一定是这一行，可以参考下面的点找到这个报错信息，然后注释掉
 
 ```javascript
 
@@ -136,13 +146,14 @@ https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/verce
   return result;
 } 
   ```
-- 250行，注释抛出的异常
+- 250或238行（不同版本可能不一样），注释抛出的异常
 
 ```javascript
    if (new URL(json.issuer).href !== expectedIssuerIdentifier.href) {
   // throw new OPE('"response" body "issuer" does not match "expectedIssuer"');
 }
 ```
+- 修改后需要手动删除一下 .next目录，并重新执行 run dev
 
 # 增加某个语言下某个词的词密度
 - 在scripts/add-word-locale.js中 修改要调整词密度的语言代码和目标词

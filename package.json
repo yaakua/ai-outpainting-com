@@ -82,7 +82,7 @@
     "@lingui/format-json": "^4.11.1",
     "@lingui/loader": "^4.11.1",
     "@lingui/macro": "^4.11.1",
-    "@lingui/swc-plugin": "^4.0.8",
+    "@lingui/swc-plugin": "4.0.8",
     "@tailwindcss/typography": "^0.5.13",
     "@types/bcryptjs": "^2.4.6",
     "@types/blueimp-md5": "^2.18.2",
