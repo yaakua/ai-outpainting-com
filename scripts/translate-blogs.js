@@ -93,7 +93,18 @@ async function translateFile(content, filePath, language, frontMatter, fileName)
   // console.log('openai返回值:', JSON.stringify(msg))
   msg = msg.choices[0].message.content
   try {
-    const { data, content: content2 } = matter(msg)
+    // 添加一个正则提取 ```markdown\n   ```的内容
+    const reg = /```markdown\n([\s\S]*)\n```/g
+    const match = reg.exec(msg)
+    let extractContent;
+    let data, content2;
+    if (match) {
+      extractContent = match[1];
+      ({ data, content: content2 } = matter(extractContent));
+    } else {
+      ({ data, content: content2 } = matter(msg.choices[0].message.content));
+    }
+
     data.originalSlug = frontMatter.slug
     // data.keepWords = frontMatter.keepWords
     data.createdAt = frontMatter.createdAt
