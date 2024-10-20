@@ -11,13 +11,21 @@ const nextConfig = {
     ]
   },
   trailingSlash: true,
-  webpack: (config) => {
+  webpack: (config, { webpack }) => {
     config.module.rules.push({
       test: /\/translations\/.*\/.*\.json$/,
       use: {
-        loader: '@lingui/loader' // https://github.com/lingui/js-lingui/issues/1782
+        loader: '@lingui/loader'
       }
     })
+
+    // 添加新的插件配置
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /canvas|jsdom/,
+        contextRegExp: /konva/
+      })
+    )
     return config
   },
   redirects() {
