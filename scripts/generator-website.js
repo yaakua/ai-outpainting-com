@@ -69,12 +69,35 @@ async function generateBlogs() {
         1. 提升 ${keyword} 的关键词密度 2. SEO 优秀。3. 以用户视角提问方式编写标题。4.至少3篇以上
     请使用json格式返回。返回格式示例：{"title":"","description":""}
     `
-  const blogs = await openAIChat4(prompt)
-  // 将结果写入文件目录中使用json保存
-  fs.writeFileSync(path.join(store_path, 'blogs.json'), JSON.stringify(JSON.parse(blogs), null, 2))
+    const blogs = await openAIChat4(prompt);
 
-  console.log('blogs:\n', blogs)
-}
+    try {
+      // Attempt to parse the response directly as JSON
+      const parsedBlogs = JSON.parse(blogs);
+      fs.writeFileSync(path.join(store_path, 'blogs.json'), JSON.stringify(parsedBlogs, null, 2));
+      console.log('blogs:\n', parsedBlogs);
+    } catch (e) {
+      // If the direct JSON parsing fails, use regex to extract the JSON content
+      console.log('blogs:\n', blogs);
+      const reg = /```json\n(.*?)```/s;
+      const blogsJson = reg.exec(blogs);
+      
+      if (blogsJson) {
+        try {
+          const blogsContent = blogsJson[1];
+          // Write the extracted JSON content to a file
+          fs.writeFileSync(
+            path.join(store_path, 'blogs.json'),
+            JSON.stringify(JSON.parse(blogsContent), null, 2),
+          );
+        } catch (parseError) {
+          console.error('Failed to parse extracted JSON content:', parseError);
+        }
+      } else {
+        console.error('Could not find JSON content within markdown block');
+      }
+    }
+  }
 
 
 async function generateBlogContent() {
@@ -105,11 +128,27 @@ async function generateBlogContent() {
             ---
             博客内容
         `
-    const blogContent = await openAIChat4(prompt)
-    // 将结果写入文件目录中使用json保存
-    fs.writeFileSync(path.join(blogDir, `${blog.title}.mdx`), blogContent)
-    console.log('blogContent:\n', blogContent)
-  }
+        const blogContent = await openAIChat4(prompt)
+        console.log('blogContent', blogContent)
+    
+        // 添加一个正则提取 ```markdown\n   ```的内容
+        const reg = /```markdown\n([\s\S]*)\n```/g
+        const match = reg.exec(blogContent)
+    
+        // 正则提取blog.title中的英文单词
+        const reg2 = /[a-zA-Z]+/g
+        const match2 = reg2.exec(blog.title)
+        // 拼接math2列表中的单词，以-连接
+        const blogFileName = match2.join('-')
+        blog.fileName = `${blogFileName}.mdx`
+    
+        if (match) {
+          const extract_content = match[1]
+          fs.writeFileSync(path.join(blogDir, blog.fileName), extract_content)
+        } else {
+          fs.writeFileSync(path.join(blogDir, blog.fileName), blogContent)
+        }
+      }
 }
 
 async function modifyPrimaryColor(mainColor) {
