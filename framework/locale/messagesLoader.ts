@@ -44,10 +44,7 @@ function convertToMessages(rawMessages: RawMessages): Messages {
   }
 
   return Object.entries(rawMessages.messages).reduce((acc, [key, value]) => {
-    if (typeof value === 'object' && value.message) {
-      // 处理 { message: string } 格式
-      acc[key] = value.message;
-    } else if (typeof value === 'string') {
+   if (typeof value === 'string') {
       // 处理直接是字符串的情况
       acc[key] = value;
     } else {
