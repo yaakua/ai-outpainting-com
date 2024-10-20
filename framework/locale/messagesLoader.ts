@@ -38,15 +38,23 @@ type RawMessages = Record<string, {
 
 // 创建一个函数来转换 RawMessages 为 Messages
 function convertToMessages(rawMessages: RawMessages): Messages {
+  if (!rawMessages || !rawMessages.messages) {
+    console.warn('原始消息对象为空或不包含 messages 属性');
+    return {};
+  }
+
   return Object.entries(rawMessages.messages).reduce((acc, [key, value]) => {
-   if (typeof value === 'string') {
-      // 处理直接是字符串的情况（虽然在您的示例中没有出现）
+    if (typeof value === 'object' && value.message) {
+      // 处理 { message: string } 格式
+      acc[key] = value.message;
+    } else if (typeof value === 'string') {
+      // 处理直接是字符串的情况
       acc[key] = value;
     } else {
-      // 对于其他情况，使用空字符串
+      // 对于其他情况，使用空字符串并记录警告
+      console.warn(`无法处理的消息格式: ${key}`, value);
       acc[key] = '';
     }
-    // console.log("###转换语言文件", key, acc[key]);
     return acc;
   }, {} as Messages);
 }

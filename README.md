@@ -61,18 +61,19 @@ async function fetchProcessByRunPod(data: any): Promise<EndpointIncompleteOutput
 - 每次修改页面有新的内容后，需要执行 `yarn extract` 命令，将新的文案提取到国际化文件当中,并执行 `yarn translate` 命令将文案翻译为对应语言
 - 如果有新增blog文章也需要执行一下 `yarn translate` 命令新将增的博客内容翻译为对应语言
 - 翻译涉及到调用api，需要先申请到api key，然后修改一下scripts/openai-chat.js 当中的api key
-
+- 如果需要新增或者减少多语言内容，需要修改framework/locale/locale.ts framework/locale/localeConfig.js framework/locale/messagesLoader.ts 这三个文件
 
 ## 基于模板上新站流程
 ### 1. 生成网站内容
-- 直接使用node scripts/generator-website.js 命令生成网站内容(这个命令会指定关键词相关的文案、TDK、博客标题)
+- 直接使用node scripts/generator-website.js 命令生成网站内容(这个命令会生成与指定关键词相关的文案、TDK、博客标题)
 - 需要先修改一下关键词和描述，然后执行命令
 
- ``` javascript
+``` javascript
   // 网站关键词
-const keyword = 'extend image ai'
-// 网站该要描述
-const description = '利用AI技术实现对图片进行扩展，在保证原始图片不变的前提下，扩展四周的内容，且能与原图片保持内容延续性
+  const keyword = 'extend image ai'
+  // 网站该要描述
+  const description = '利用AI技术实现对图片进行扩展，在保证原始图片不变的前提下，扩展四周的内容，且能与原图片保持内容延续性
+
 ```
 
 - 修改config/site.ts当中的配置信息
@@ -102,7 +103,7 @@ const description = '利用AI技术实现对图片进行扩展，在保证原始
 ## 更新记录
 - 【2024-10-19】 解决启动时提示 `Error: ENOENT: no such file or directory xxx/.next/fallback-build-manifest.json` 问题,通过固定"@lingui/swc-plugin": "4.0.8",版本解决。删除本地node_modules目录，重新安装依赖解决。
   - 增加Google 登录配置参考截图
-
+- 【2024-10-20】 解决启动时提示 `Error: Cannot find module 'canvas'` 问题,通过添加webpack ignore plugin 解决。优化多语言文件加载方式。
 ## 当前项目使用到的 UI 组件
 
 - [1.纯 tailwindcss代码组件网站](https://tailspark.co/components)
